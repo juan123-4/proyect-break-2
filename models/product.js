@@ -1,4 +1,3 @@
-//models product
 const mongoose = require('mongoose');
 
 const RopaSchema = new mongoose.Schema({
@@ -11,7 +10,7 @@ const RopaSchema = new mongoose.Schema({
         required: true
     },
     imagen: {
-        type: String, // Aqui es donde se almacena la URL de la imagen
+        type: String, // Aqui se coloca la URL de la imagen
         required: true
     },
     categoria: {

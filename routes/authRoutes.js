@@ -6,9 +6,6 @@ const chechAuth=require("../middlewares/authMiddleware")
 
 const auth = admin.auth(); 
 
-// router.get("/", (req, res) => {
-//     res.redirect("/register");
-// });
 router.get("/register", (req, res) => {
     res.sendFile(path.join(__dirname, "../public/views", "register.html"));
 });
@@ -37,7 +34,7 @@ router.post("/login", async (req, res) => {
         await auth.verifyIdToken(idToken);
         res.cookie("token", idToken, { httpOnly: true, secure: false });
         res.json({ success: true });
-        console.log(idToken)
+        // console.log(idToken)
     } catch (error) {
         console.error(`Ha habido un error: ${error}`);
         res.status(401).json({ success: false, error: "Token inválido" });
@@ -51,22 +48,10 @@ router.get("/dashboard", chechAuth,(req, res) => {
     res.sendFile(path.join(__dirname, "../public/views", "dashboard.html"));
 });
 
-
-
 router.post("/logout",(req, res) => {
     res.clearCookie("token")
     res.redirect("/login")
     
 });
-router.post("/init",(req,res)=>{
-    res.redirect("/login")
-})
-
-// router.post("/in",(req,res)=>{
-//     res.redirect("/register")
-// })
-
-
-
 
 module.exports = router;

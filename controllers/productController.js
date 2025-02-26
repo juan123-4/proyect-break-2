@@ -1,12 +1,10 @@
 const Ropa = require('../models/product');
-
 const mongoose = require('mongoose');
 
 // Devuelve  todos los productos **
 const showProducts = async (req, res) => {
     try {
         const products = await Ropa.find();
-        console.log("Productos en la base de datos:", products);
         const productCards = getProductCardsProducts(products);
         const html = baseHtml + getNavBar() + productCards;
         res.send(html);
@@ -18,7 +16,6 @@ const showProducts = async (req, res) => {
 const showProductsForPrincipal = async (req, res) => {
     try {
         const products = await Ropa.find();
-        console.log("Productos en la base de datos:", products);
         const productCards = getProductCardsPrincipal(products);
         const html = baseHtml +  productCards;
         res.send(html);
@@ -32,10 +29,7 @@ const showProductById = async (req, res) => {
     
         try {
             const id = String(req.params.productId).trim(); // Asegurar que sea un String limpio
-            console.log("ID recibido en la petición:", id);
-    
-    
-            // Validar si el ID es correcto
+            
             if (!mongoose.Types.ObjectId.isValid(id)) {
                 return res.status(400).json({ error: 'ID no válido' });
             }
@@ -58,11 +52,8 @@ const showProductById = async (req, res) => {
     const showProductByIdPrincipal = async (req, res) => {
     
         try {
-            const id = String(req.params.productId).trim(); // Asegurar que sea un String limpio
-            console.log("ID recibido en la petición:", id);
-    
-    
-            // Validar si el ID es correcto
+            const id = String(req.params.productId).trim(); 
+            
             if (!mongoose.Types.ObjectId.isValid(id)) {
                 return res.status(400).json({ error: 'ID no válido' });
             }
@@ -74,7 +65,7 @@ const showProductById = async (req, res) => {
             }
     
             const productCard = ComeBack(product);
-            const html = baseHtml +  productCard;
+            const html = baseHtml + getNavBarPrincipal() + productCard;
             res.send(html);
         } catch (error) {
             console.error("Error en la consulta:", error);
@@ -83,7 +74,7 @@ const showProductById = async (req, res) => {
     };
     
 
-// Devuelve la vista con el formulario para subir un artículo nuevo **
+// Devuelve la vista con el formulario para subir un artículo nuevo 
 const showNewProduct = (req, res) => {
     const html = baseHtml + getNavBar() + getNewProductForm()+ `</body></html>`;
     res.send(html);
@@ -119,10 +110,7 @@ const showEditProduct = async (req, res) => {
 // Actualiza un producto **
 
 const updateProduct = async (req, res) => {
-    console.log("ID recibido:", req.params.productId); // 👀 Verificar si el ID está llegando correctamente
-    console.log("Datos recibidos:", req.body); // 👀 Verificar los datos enviados
-
-    const { nombre, descripcion, imagen, categoria, talla, precio } = req.body;
+const { nombre, descripcion, imagen, categoria, talla, precio } = req.body;
     try {
         const updatedProduct = await Ropa.findByIdAndUpdate(
             req.params.productId,
@@ -131,16 +119,15 @@ const updateProduct = async (req, res) => {
         );
 
         if (!updatedProduct) {
-            console.log("Producto no encontrado en la base de datos"); // 👀
+            console.log("Producto no encontrado en la base de datos"); 
             return res.status(404).send("Producto no encontrado");
         }
-
-        console.log("Producto actualizado:", updatedProduct); // 👀
-        res.redirect(`/dashboard/${updatedProduct._id}/edit/`);
+        res.redirect(`/edit/${updatedProduct._id}`);
+        
        
        
     } catch (error) {
-        console.error("Error en la actualización:", error); // 👀
+        console.error("Error en la actualización:", error); 
         res.status(500).send("No se pudo actualizar el artículo de ropa");
     }
 };
@@ -182,10 +169,11 @@ function getProductCards(products) {
     return html;
 }
 function getProductCardsProducts(products) {
-    let html = '';
+    
+    let html = '<h1>Productos</h1><div class="product-container">';
     for (let product of products) {
         html += `
-        <div class="total">
+        
             <div class="product-card">
                 <h2>${product.nombre}</h2>
                 <img src="${product.imagen}" alt="${product.nombre}">
@@ -194,11 +182,31 @@ function getProductCardsProducts(products) {
                 </a>
             </div>
             <div id="info-${product._id}" class="product-info" style="display: none;"></div>
-        </div>
         `;
     }
+    html += '</div>'; 
     return html;
 }
+function getProductCardsFilter(products) {
+    
+    let html = '<h1>Productos</h1><div class="product-container">';
+    for (let product of products) {
+        html += `
+        
+            <div class="product-card">
+                <h2>${product.nombre}</h2>
+                <img src="${product.imagen}" alt="${product.nombre}">
+                <a href="/principal/${product._id}">
+                    <button>Ver detalle</button>
+                </a>
+            </div>
+            <div id="info-${product._id}" class="product-info" style="display: none;"></div>
+        `;
+    }
+    html += '</div>'; 
+    return html;
+}
+
 
 function getProductCardsPrincipal(products) {
     let html = '';
@@ -225,11 +233,7 @@ function getProductCardsPrincipal(products) {
 const showDashboard = async (req, res) => {
     try {
         const products = await Ropa.find();
-        console.log("Productos encontrados en la BD:", products); // 🧐 Verificar productos obtenidos
-
         const productCards = getProductCards(products);
-        console.log("HTML generado para las tarjetas:", productCards); // ⚠️ Ver si se está generando correctamente
-
         const html = baseHtml + getDashboard(productCards);
         res.send(html);
     } catch (error) {
@@ -242,8 +246,6 @@ const showDashboard = async (req, res) => {
 // Función auxiliar para generar el HTML del dashboard
 function getDashboard(productCards) {
     return `
-        
-           
             <div id="product-list">
                 ${productCards}
             </div>
@@ -251,31 +253,42 @@ function getDashboard(productCards) {
     `;
 }
 
-
+//Formulario para la creacion de un producto
 function getNewProductForm() {
     return `
+    <h1>crear Producto</h1>
+    <div class="ventana-contenedor_crear">
+        <div class="ventana_crear">
         <form action="/dashboard" method="POST">
             
             <label for="nombre">Nombre:</label>
+            </br>
             <input type="text" id="nombre" name="nombre" required>
+            </br></br>
             
             <label for="descripcion">Descripción:</label>
+            </br>
             <textarea id="descripcion" name="descripcion" required></textarea>
-            
+            </br></br>
+
             <label for="imagen">Imagen URL:</label>
+            </br>
             <input type="text" id="imagen" name="imagen" required oninput="previewImage()">
             <img id="preview" src="" alt="Vista previa" style="display:none; width: 150px; margin-top: 10px;">
-
+            </br></br>
             
            <label for="categoria">Categoría:</label>
+           </br>
             <select id="categoria" name="categoria" required>
                 <option value="Camisetas">Camisetas</option>
                 <option value="Pantalones">Pantalones</option>
                 <option value="Zapatos">Zapatos</option>
                 <option value="Accesorios">Accesorios</option>
             </select>
+            </br></br>
 
             <label for="talla">Talla:</label>
+            </br>
             <select id="talla" name="talla" required>
                 <option value="XS">XS</option>
                 <option value="S">S</option>
@@ -283,14 +296,21 @@ function getNewProductForm() {
                 <option value="L">L</option>
                 <option value="XL">XL</option>
             </select>
+            </br></br>
 
             <label for="precio">Precio:</label>
+            </br>
             <input type="number" id="precio" name="precio" required>
-            
-            <button type="submit">Crear Producto</button>
+            </br></br></br>
+
+            <button type="submit" id="boton_crear">Crear Producto</button>
+            </br>
         </form>
+        </div>
+    </div>
     `;
 }
+//Funcion que ayuda a convertir el input donde se coloca el url en la imagen soicitada
 
 function previewImage() {
     const input = document.getElementById("imagen");
@@ -303,28 +323,60 @@ function previewImage() {
         preview.style.display = "none";
     }
 }
+ 
 
+//Formulario para la edicion de un producto
 function getEditProductForm(product) {
     return `
+    <h1>Editar Producto</h1>
+    <div class="ventana-contenedor_editar">
+        <div class="ventana_editar">
         <form action="/dashboard/${product._id}/update" method="post">
+
             <label for="nombre">Nombre:</label>
+            </br>
             <input type="text" id="nombre" name="nombre" value="${product.nombre}" required>
+            </br></br>
+
+            
             <label for="descripcion">Descripción:</label>
+            </br>
             <textarea id="descripcion" name="descripcion" required>${product.descripcion}</textarea>
+            </br></br>
+
             <label for="imagen">Imagen URL:</label>
+            </br>
             <input type="text" id="imagen" name="imagen" value="${product.imagen}" required>
+            </br></br>
+
             <label for="categoria">Categoría:</label>
+            </br>
             <input type="text" id="categoria" name="categoria" value="${product.categoria}" required>
+            </br></br>
+
             <label for="talla">Talla:</label>
+            </br>
             <input type="text" id="talla" name="talla" value="${product.talla}" required>
+            </br></br>
+
+
             <label for="precio">Precio:</label>
+            </br>
             <input type="number" id="precio" name="precio" value="${product.precio}" required>
-            <button type="submit">Actualizar Producto</button>
-            <a href="/"><button>Inicio</button></a>        </form>
+            </br></br>
+
+
+            <button type="submit">Guardar</button>
+            </form>
+            <a href="/dashboard"><button id="despegar">Inicio</button></a>
+            </br>
+        </div>
+    </div>
+            
     `;
 }
 
-
+//variable que contiene la estructura inicial de un documento HTML
 const baseHtml = `
     <!DOCTYPE html>
     <html lang="es">
@@ -341,12 +393,14 @@ const baseHtml = `
  function getNavBar() {
     return `
         <header class="encabezado">
+        
             <li><a href="/products">Productos</a></li>
-            <li><a href="/products/filter/principal?categoria=Camisetas">camisetas</a></li>
-            <li><a href="/products/filter/principal?categoria=Pantalones">Pantalones</a></li>
-            <li><a href="/products/filter/principal?categoria=Zapatos">zapatos</a></li>
-            <li><a href="/products/filter/principal?categoria=Accesorios">Accesorios</a></li>
+            <li><a href="/products/filter?categoria=Camisetas">camisetas</a></li>
+            <li><a href="/products/filter?categoria=Pantalones">Pantalones</a></li>
+            <li><a href="/products/filter?categoria=Zapatos">zapatos</a></li>
+            <li><a href="/products/filter?categoria=Accesorios">Accesorios</a></li>
             <li><a href="/dashboard/new">Nuevo Producto</a></li>
+        
         <form action="/logout" method="post">
             <li><a href=""> <button type="submit" id="cerrar">logout</button></a></li>
         </form>
@@ -355,89 +409,89 @@ const baseHtml = `
    `;
 }
 
+//Función auxiliar para generar el HTML de la barra de navegación en la pagina principal
+function getNavBarPrincipal() {
+    return `
+        <header class="encabezado">
+            <li><a href="/">Productos</a></li>
+            <li><a href="/product/filter_principal?categoria=Camisetas">camisetas</a></li>
+            <li><a href="/product/filter_principal?categoria=Pantalones">Pantalones</a></li>
+            <li><a href="/product/filter_principal?categoria=Zapatos">zapatos</a></li>
+            <li><a href="/product/filter_principal?categoria=Accesorios">Accesorios</a></li>
+            <li><a href="/register">Iniciar sesion </a></li>
+            <li><a href="/login">login</a></li>
+       
+        </header>
 
+   `;
+}
+
+//funcion para mostrar los elementos de el producto
 function getProductCard(product) {
     return `
-        <div class="product-card">
-            <img src="${product.imagen}" alt="${product.nombre}">
-            <h2>${product.nombre}</h2>
-            <p>${product.descripcion}</p>
-            <p>${product.precio}€</p>
-            <p>Categoría: ${product.categoria}</p>
-            <p>Talla: ${product.talla}</p>
-            
-            <form action="/dashboard/${product._id}/delete" method="POST" 
-                onsubmit="return confirm('¿Seguro que quieres eliminar este producto?')">
-                <button type="submit">Borrar</button>
-            </form>
+        <div class="product-conta_ventana">
+            <div class="product-ventana">
+                <h2>${product.nombre}</h2>
+                <img src="${product.imagen}" alt="${product.nombre}" id="foto">
+                <p>${product.descripcion}</p>
+                <p>${product.precio}€</p>
+                <p>Categoría: ${product.categoria}</p>
+                <p>Talla: ${product.talla}</p>
 
-           <form action="/dashboard/${product._id}/update" method="POST">
-                <button type="submit" 
-                onclick="return confirm('¿Seguro que quieres editar este producto?')">Editar</button>
-            </form>
+                <form action="/dashboard/${product._id}/update" method="POST">
+                    <button type="submit" id="button-ventana"
+                    onclick="return confirm('¿Seguro que quieres editar este producto?')">Editar</button>
+                </form>
 
-            
-            
+                <form action="/dashboard/${product._id}/delete" method="POST" 
+                    onsubmit="return confirm('¿Seguro que quieres eliminar este producto?')">
+                    <button type="submit" id="button-ventana">Borrar</button>
+                </form>
+            </div>
         </div>
     `;
 }
 
 function ComeBack(product) {
     return `
-        <div class="product-card">
-            <img src="${product.imagen}" alt="${product.nombre}">
+    <div class="product-conta_ventana">
+        <div class="product-ventana">
             <h2>${product.nombre}</h2>
+            <img src="${product.imagen}" alt="${product.nombre} " id="foto">
             <p>${product.descripcion}</p>
             <p>${product.precio}€</p>
             <p>Categoría: ${product.categoria}</p>
             <p>Talla: ${product.talla}</p>
-            <li><a href="/products/filter/principal?categoria=Camisetas">camisas</a></li>
-            <li><a href="/products/filter/principal?categoria=Zapatos">zapatos</a></li>
-            <a href="/"><button>Iinicio</button></a>
+            
         </div>
+     </div>
     `;
 }
 
+//funcion de filtrado de categorias
 const filterProducts = async (req, res) => {
     try {
-        // Obtener la categoría de los parámetros de la solicitud (en este caso, usando `req.query`)
+       
         const { categoria } = req.query;
-
-        // Obtener todos los productos
         const products = await Ropa.find();
-
-        // Filtrar los productos por la categoría especificada
         const filteredProducts = products.filter(product => product.categoria === categoria);
-
-        // Generar las tarjetas de productos filtrados
-        const productCards = getProductCards(filteredProducts);
-
-        // Generar el HTML y enviarlo
-        const html = baseHtml + getNavBar() + productCards;
+        const productCards = getProductCardsProducts(filteredProducts);
+        const html = baseHtml + getNavBar() + productCards +`</body></html>`;
         res.send(html);
     } catch (error) {
         res.status(500).json({ error: 'No se pudo obtener los artículos de ropa' });
     }
 };
 
-
-
+//funcion de filtrado de categorias en la pagina principal
 const filterProductsPrincipal = async (req, res) => {
     try {
-        // Obtener la categoría de los parámetros de la solicitud (en este caso, usando `req.query`)
+        
         const { categoria } = req.query;
-
-        // Obtener todos los productos
         const products = await Ropa.find();
-
-        // Filtrar los productos por la categoría especificada
         const filteredProducts = products.filter(product => product.categoria === categoria);
-
-        // Generar las tarjetas de productos filtrados
-        const productCards = filteredProducts.map(ComeBack).join(""); 
-
-        // Generar el HTML y enviarlo
-        const html = baseHtml + productCards;
+        const productCards = getProductCardsFilter(filteredProducts)
+        const html = baseHtml + getNavBarPrincipal() + productCards;
         res.send(html);
     } catch (error) {
         res.status(500).json({ error: 'No se pudo obtener los artículos de ropa' });

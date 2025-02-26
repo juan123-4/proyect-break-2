@@ -1,8 +1,8 @@
 
-      const dotenv = require("dotenv");
-      dotenv.config();
+const dotenv = require("dotenv");
+dotenv.config();
       
-      const serviceAccount = {
+const serviceAccount = {
           "type": process.env.FIREBASE_TYPE,
           "project_id": process.env.FIREBASE_PROJECT_ID,
           "private_key_id": process.env.FIREBASE_PRIVATE_KEY_ID,
@@ -16,5 +16,5 @@
           "universe_domain": process.env.FIREBASE_UNIVERSE_DOMAIN
       };
       
-      module.exports = serviceAccount;
+module.exports = serviceAccount;
       

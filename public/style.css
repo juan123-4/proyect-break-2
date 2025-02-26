@@ -1,34 +1,29 @@
-/* css style */
-h1{display: flex;
- align-items: center;
- justify-content: center;
-}
-h2{font-size: 20px;
-  display: flex;
-align-items: center;
-justify-content: center;
-margin: 15px;
-}
-body {
-    font-family: Arial, sans-serif;
 
+h1{
+    display: flex;
+    align-items: center;
+    justify-content: center;}
+h2{
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 15px;}
+body{
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
-  
-
-}
-nav ul {
+    background-color: #f4f4f4;}
+nav ul{
     list-style-type: none;
-    padding: 0;
-}
-nav ul li {
+    padding: 0;}
+nav ul li{
     display: inline;
-    margin-right: 10px;
-}
-a{list-style-type: none;
+    margin-right: 10px;}
+a{
+    list-style-type: none;
     text-decoration: none;
-color: white;}
+    color: white;}
 .product-card {
     border: 1px solid #ccc;
     padding: 10px;
@@ -37,10 +32,7 @@ color: white;}
     display: flex;
     width: 300px;
     height: 315px;
-    flex-direction: column;
-   
-    
-}
+    flex-direction: column;}
 #cerrar{
     background: none;
     border: none;
@@ -53,62 +45,137 @@ color: white;}
     background-color: black;
     display: flex;
     padding-left: 170px;
-    padding-right: 170px;
-    
-    
-
-}
+    padding-right: 170px;}
 .encabezado li{
     margin-left: 25px;
     margin-top: 20px;
     margin-right:25px;
-    margin-bottom: 20px;
-    
-}
+    margin-bottom: 20px;}
 img{
     width: 200px;
     height: 190px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left:45px;
-
-}
+    margin-left:45px;}
 #productos{
     margin-left: 85px;
     margin-right:85px;
     display: grid;
     grid-template-columns:repeat(3,1fr);
-    
     width: 200px;
     height: 200px;
-    flex-direction: column;
-}
+    flex-direction: column;}
 .product-card a button{
     width: 210px;
     height: 30px;
     margin-top: 20px;
     margin-left: 40px;
     background-color: rgb(61, 61, 248);
-    color: white;
-}
-
+    color: white;}
 #product-list{
     margin-left: 40px;
     margin-right:85px;
     display: grid;
-    grid-template-columns:repeat(3,1fr);
-    width: 200px;
-    height: 200px; 
-    
-  
-}
-.total{ 
+    grid-template-columns:repeat(3,1fr);}
+.product-container{
     margin-left: 85px;
     margin-right:85px;
     display: grid;
-    grid-template-columns:repeat(3,1fr);
-    background-color: red;
-}
-    
-
+    grid-template-columns:repeat(3,1fr);}
+.product-conta_ventana{display: flex;
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; }
+.product-ventana {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    text-align: center;}
+#foto{
+    margin-left: 95px;
+    margin-right: 90px;}
+#button-ventana{
+    margin-top: 10px;
+    width: 80px;
+    height:40px ;
+    background-color: rgb(61, 61, 248);
+    color: white;}
+.ventana-contenedor_crear{display: flex;
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; }
+.ventana_crear{background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 250px;
+    height: 500px;}
+.ventana_crear  select{
+    width: 250px;
+    height: 30px;
+    background-color: rgb(240, 237, 237);}
+.ventana_crear  input{
+    width: 243px;
+    height: 30px;}
+.ventana_crear  textarea{
+    width: 243px;
+    height: 60px;}
+.ventana_crear  button{
+    width: 250px;
+    height: 30px;
+    background-color: rgb(61, 61, 248);
+    color: white;}
+#despegar{
+    margin-top: 10px;}
+.ventana-contenedor_editar{
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh;}
+.ventana_editar{
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 250px;
+    height: 550px;}
+.ventana_editar select{
+    width: 250px;
+    height: 30px;
+    background-color: rgb(240, 237, 237);}
+.ventana_editar input{
+    width: 243px;
+    height: 30px;}
+.ventana_editar textarea{
+    width: 243px;
+    height: 60px;}
+.ventana_editar button{
+    width: 250px;
+    height: 30px;
+    background-color: rgb(61, 61, 248);
+    color: white;}
+#contenedorPagina{
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh;
+    flex-direction: column;}
+#pagina{
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 250px;
+    height: 300px;}
+#pagina input{
+    width: 243px;
+    height: 30px;}
+#pagina button{
+    width: 250px;
+    height: 30px;
+    background-color: rgb(61, 61, 248);
+    color: white;}
+        

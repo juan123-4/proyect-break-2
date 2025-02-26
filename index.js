@@ -1,5 +1,4 @@
 //Inicializa Firebase Admin
-
 const admin = require("firebase-admin");
 const serviceAccount = require("./config/firebase");
 
@@ -12,12 +11,10 @@ const express = require("express");
 const app = express();
 const PORT = process.env.PORT
 const path = require("path");
-const methodOverride = require('method-override');
 
 
 
-
-const { dbConnection } = require('./config/db');
+const { dbConnection } = require('./config/db'); 
 
 const router = require("./routes/authRoutes");
 const routes= require("./routes/productRoutes")
@@ -34,8 +31,8 @@ app.use("/", router);
 app.use("/", routes)
 
 
-dbConnection();
-app.use(methodOverride('_method'));
+dbConnection(); //iniciando la conexión con MongoDB.
+
 app.listen(PORT, () => {
     console.log(`Server listening on http://localhost:${PORT}`);
 });

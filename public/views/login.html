@@ -3,16 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style.css">
     <title>Login</title>
 </head>
 <body>
+<div id="contenedorPagina">
     <h1>login</h1>
+    <div id="pagina" >
+    
     <form id="LoginForm" method="post">
+        <label>Email:</label>
+        </br>
         <input type="email" name="email" id="email"placeholder="Introduce tu Email" required>
+        </br></br>
+        
+        <label>Contraseña:</label>
+        </br>
         <input type="password" name="password" id="password"placeholder="Introduce tu contraseña" required>
-        <button type="submit" id="Loginbutton">Iniciar sesion</button>
+        </br></br>
+
+        <button type="submit" id="Loginbutton">Login</button>
     </form>
+        </br></br>
+        <a href="/register"><button id="LoginRegister">Registrarse</button></a>
+        </br></br>
+        <a href="/"><button id="LoginRegister">Atras</button></a>
+
     <div id="mensajeLogin"></div>
+    </div>
+</div>
     <script type="module" src="../controll_Login.js" ></script>
 </body>
 </html>
