@@ -15,6 +15,8 @@ const path = require("path");
 
 
 const { dbConnection } = require('./config/db'); 
+const swaggerUI=require("swagger-ui-express")
+const docs=require("./docs/index")
 
 const router = require("./routes/authRoutes");
 const routes= require("./routes/productRoutes")
@@ -25,6 +27,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser()); 
+app.use("/api-docs",swaggerUI.serve,swaggerUI.setup(docs)) // Middleware de Swagger
 
 // Usa el enrutador para manejar las rutas
 app.use("/", router);

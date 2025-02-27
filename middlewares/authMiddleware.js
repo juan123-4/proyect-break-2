@@ -16,4 +16,6 @@ next()
     console.log(`error al verificar el toen de las cookies ${error}`)
 })
 }
+
+
 module.exports=chechAuth
