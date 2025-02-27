@@ -40,4 +40,11 @@ app.listen(PORT, () => {
     console.log(`Server listening on http://localhost:${PORT}`);
 });
 
+
+//RENDER
+//https://proyect-break-2.onrender.com
+
+
+//SWAGGER
+//http://localhost:3000/api-docs
 module.exports = app;
